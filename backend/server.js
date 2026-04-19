@@ -119,6 +119,10 @@ app.put('/api/rooms/:id/checkout', (req, res) => {
 });
 
 // Start Server
+//app.listen(PORT, () => {
+//    console.log(`Server running on port ${PORT}`);
+//});
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
