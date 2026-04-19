@@ -52,7 +52,7 @@ app.get('/api/rooms', (req, res) => {
     const sql = "SELECT * FROM rooms";
     db.all(sql, [], (err, rows) => {
         if (err) {
-            res.status(400).json({"error": err.message});
+            res.status(400).json({ "error": err.message });
             return;
         }
         res.json({
@@ -66,13 +66,13 @@ app.get('/api/rooms', (req, res) => {
 app.post('/api/rooms', (req, res) => {
     const { name, type, price } = req.body;
     if (!name || !type || !price) {
-        return res.status(400).json({"error": "Please provide name, type, and price"});
+        return res.status(400).json({ "error": "Please provide name, type, and price" });
     }
     const sql = 'INSERT INTO rooms (name, type, status, price) VALUES (?, ?, ?, ?)';
     const params = [name, type, 'available', price];
-    db.run(sql, params, function(err) {
+    db.run(sql, params, function (err) {
         if (err) {
-            res.status(400).json({"error": err.message});
+            res.status(400).json({ "error": err.message });
             return;
         }
         res.json({
@@ -86,14 +86,14 @@ app.post('/api/rooms', (req, res) => {
 app.put('/api/rooms/:id/book', (req, res) => {
     const { customer_name, booked_until } = req.body;
     if (!customer_name || !booked_until) {
-         return res.status(400).json({"error": "Please provide customer_name and booked_until"});
+        return res.status(400).json({ "error": "Please provide customer_name and booked_until" });
     }
     const sql = `UPDATE rooms SET status = 'booked', customer_name = ?, booked_until = ? WHERE id = ?`;
     const params = [customer_name, booked_until, req.params.id];
-    
-    db.run(sql, params, function(err) {
+
+    db.run(sql, params, function (err) {
         if (err) {
-            res.status(400).json({"error": res.message});
+            res.status(400).json({ "error": res.message });
             return;
         }
         res.json({
@@ -106,9 +106,9 @@ app.put('/api/rooms/:id/book', (req, res) => {
 // Checkout a room
 app.put('/api/rooms/:id/checkout', (req, res) => {
     const sql = `UPDATE rooms SET status = 'available', customer_name = NULL, booked_until = NULL WHERE id = ?`;
-    db.run(sql, [req.params.id], function(err) {
+    db.run(sql, [req.params.id], function (err) {
         if (err) {
-            res.status(400).json({"error": res.message});
+            res.status(400).json({ "error": res.message });
             return;
         }
         res.json({
@@ -119,7 +119,6 @@ app.put('/api/rooms/:id/checkout', (req, res) => {
 });
 
 //Start Server
-const PORT=process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
